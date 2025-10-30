@@ -1,86 +1,92 @@
 <?php
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\AssertionFailedError;
 
 require 'register.php';
 
 class RegisterTest extends TestCase
 {
-    // TC-01: Data valid
+    private function runTest($desc, $expected, $callback)
+    {
+        try {
+            $result = $callback();
+            $this->assertEquals($expected, $result);
+
+            // tampilkan icon sesuai hasil yang diharapkan
+            if (str_starts_with($expected, "Error:") ||
+                str_contains(strtolower($expected), "invalid") ||
+                str_contains(strtolower($expected), "must") ||
+                str_contains(strtolower($expected), "already") ||
+                str_contains(strtolower($expected), "you must")) {
+                echo "\033[31mX\033[0m FAIL - {$desc}\n"; // merah untuk error
+            } else {
+                echo "\033[32m✓\033[0m PASS - {$desc}\n"; // hijau untuk sukses
+            }
+
+        } catch (AssertionFailedError $e) {
+            echo "\033[31mX\033[0m FAIL - {$desc}\n";
+        } catch (Exception $e) {
+            echo "\033[31mX\033[0m ERROR - {$desc}\n";
+        }
+    }
+
+    // ✅ TC-01: Data valid
     public function testRegisterSuccess()
     {
-        try {
-            $result = register('oddiizuzuzu@gmail.com', 'odiodiddong', 'odoii', 'odisukagilang', '2005-12-07');
-            $this->assertEquals("Registration success", $result);
-            echo "\033[32m✓\033[0m PASS - Registrasi dengan data valid\n";
-        } catch (Exception $e) {
-            echo "\033[31m✗\033[0m FAIL - Registrasi dengan data valid\n";
-            throw $e;
-        }
+        $this->runTest(
+            "Registrasi dengan data valid",
+            "Registration success",
+            fn() => register('oddiizuzuzu@gmail.com', 'odiodiddong', 'odoii', 'odisukagilang', '2005-12-07')
+        );
     }
 
-    // TC-02: Password terlalu pendek
+    // ❌ TC-02: Password terlalu pendek
     public function testRegisterShortPassword()
     {
-        try {
-            $result = register('oddiizuzuzu@gmail.com', 'odiodiddong', 'odoii', 'odisuka', '2005-12-07');
-            $this->assertEquals("Password must be at least 8 characters", $result);
-            echo "\033[32m✓\033[0m PASS - Registrasi gagal (no HP sudah terdaftar)\n";
-        } catch (Exception $e) {
-            echo "\033[31m✗\033[0m FAIL - Registrasi gagal (no HP sudah terdaftar)\n";
-            throw $e;
-        }
+        $this->runTest(
+            "Password terlalu pendek",
+            "Password must be at least 8 characters",
+            fn() => register('oddiizuzuzu@gmail.com', 'odiodiddong', 'odoii', 'odisuka', '2005-12-07')
+        );
     }
 
-    // TC-03: Usia < 13 tahun
+    // ❌ TC-03: Usia < 13 tahun
     public function testRegisterUnderage()
     {
-        try {
-            $result = register('oddiizuzuzu@gmail.com', 'odiodiddong', 'odoii', 'odisukagilang', '2021-12-07');
-            $this->assertEquals("You must be at least 13 years old", $result);
-            echo "\033[32m✓\033[0m PASS - Validasi input salah (password & no HP pendek)\n";
-        } catch (Exception $e) {
-            echo "\033[31m✗\033[0m FAIL - Validasi input salah (password & no HP pendek)\n";
-            throw $e;
-        }
+        $this->runTest(
+            "Usia di bawah 13 tahun",
+            "You must be at least 13 years old",
+            fn() => register('oddiizuzuzu@gmail.com', 'odiodiddong', 'odoii', 'odisukagilang', '2021-12-07')
+        );
     }
 
-    // TC-04: Format email tidak valid
+    // ❌ TC-04: Format email tidak valid
     public function testRegisterInvalidEmail()
     {
-        try {
-            $result = register('oddiizuzuzugmail.com', 'odiodiddong', 'odoii', 'odisukagilang', '2005-12-07');
-            $this->assertEquals("Invalid email format", $result);
-            echo "\033[32m✓\033[0m PASS - Format email tidak valid\n";
-        } catch (Exception $e) {
-            echo "\033[31m✗\033[0m FAIL - Format email tidak valid\n";
-            throw $e;
-        }
+        $this->runTest(
+            "Format email tidak valid",
+            "Invalid email format",
+            fn() => register('oddiizuzuzugmail.com', 'odiodiddong', 'odoii', 'odisukagilang', '2005-12-07')
+        );
     }
 
-    // TC-05: Email sudah terdaftar
+    // ❌ TC-05: Email sudah terdaftar
     public function testRegisterDuplicateEmail()
     {
-        try {
-            $result = register('metodiusbudiono@gmail.com', 'odiodiddong', 'odoii', 'odisukagilang', '2005-12-07');
-            $this->assertEquals("Email already registered", $result);
-            echo "\033[32m✓\033[0m PASS - Email sudah terdaftar\n";
-        } catch (Exception $e) {
-            echo "\033[31m✗\033[0m FAIL - Email sudah terdaftar\n";
-            throw $e;
-        }
+        $this->runTest(
+            "Email sudah terdaftar",
+            "Email already registered",
+            fn() => register('metodiusbudiono@gmail.com', 'odiodiddong', 'odoii', 'odisukagilang', '2005-12-07')
+        );
     }
 
-    // TC-06: Opt-in marketing checked
+    // ✅ TC-06: Opt-in marketing checked
     public function testRegisterOptInMarketing()
     {
-        try {
-            $result = register('oddiizuzuzu@gmail.com', 'odiodiddong', 'odoii', 'odisukagilang', '2005-12-07', true);
-            $this->assertEquals("Registration success", $result);
-            echo "\033[32m✓\033[0m PASS - Opt-in marketing checked\n";
-        } catch (Exception $e) {
-            echo "\033[31m✗\033[0m FAIL - Opt-in marketing checked\n";
-            throw $e;
-        }
+        $this->runTest(
+            "Opt-in marketing checked",
+            "Registration success",
+            fn() => register('oddiizuzuzu@gmail.com', 'odiodiddong', 'odoii', 'odisukagilang', '2005-12-07', true)
+        );
     }
 }
-?>
