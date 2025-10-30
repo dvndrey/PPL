@@ -30,7 +30,6 @@ class RegisterTest extends TestCase
         }
     }
 
-    // ✅ TC-01: Data valid
     public function testRegisterSuccess()
     {
         $this->runTest(
@@ -40,7 +39,6 @@ class RegisterTest extends TestCase
         );
     }
 
-    // ❌ TC-02: Password terlalu pendek
     public function testRegisterShortPassword()
     {
         $this->runTest(
@@ -50,7 +48,6 @@ class RegisterTest extends TestCase
         );
     }
 
-    // ❌ TC-03: Usia < 13 tahun
     public function testRegisterUnderage()
     {
         $this->runTest(
@@ -60,7 +57,6 @@ class RegisterTest extends TestCase
         );
     }
 
-    // ❌ TC-04: Format email tidak valid
     public function testRegisterInvalidEmail()
     {
         $this->runTest(
@@ -70,7 +66,6 @@ class RegisterTest extends TestCase
         );
     }
 
-    // ❌ TC-05: Email sudah terdaftar
     public function testRegisterDuplicateEmail()
     {
         $this->runTest(
@@ -80,7 +75,6 @@ class RegisterTest extends TestCase
         );
     }
 
-    // ✅ TC-06: Opt-in marketing checked
     public function testRegisterOptInMarketing()
     {
         $this->runTest(
