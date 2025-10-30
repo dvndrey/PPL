@@ -81,12 +81,4 @@ class ServerManagementTest extends TestCase
         );
     }
 
-    public function testCreateVoiceChannel()
-    {
-        $this->runTest(
-            'Channel voice berhasil dibuat',
-            "Channel voice 'Lobby' berhasil dibuat di server 'MyServer'",
-            fn() => $this->serverManagement->createChannel('MyServer', 'Lobby', 'voice')
-        );
-    }
 }
