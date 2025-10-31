@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 use PHPUnit\Framework\TestCase;
 
 require_once __DIR__ . '/../Chat/ChatService.php';
 
 class ChatServiceTest extends TestCase
 {
-    private $chatService;
+    private ChatService $chatService;
 
     protected function setUp(): void
     {
@@ -21,54 +23,66 @@ class ChatServiceTest extends TestCase
         );
     }
 
+    private function pass(string $name): void
+    {
+        echo "\033[32m✅ PASS - {$name}\033[0m\n";
+        flush();
+    }
+
+    private function showFail(string $name): void
+    {
+        echo "\033[31m❌ FAIL - {$name}\033[0m\n";
+        flush();
+    }
+
     /** @test */
-    public function testSendDM()
+    public function testSendDM(): void
     {
         try {
             $result = $this->chatService->sendDM(1, 2, "Halo");
             $this->assertStringContainsString("DM from Gilang to CowK: Halo", $result);
-            echo "\033[32m✓\033[0m PASS - Send DM\n";
-        } catch (Exception $e) {
-            echo "\033[31m✗\033[0m FAIL - Send DM\n";
+            $this->pass('Send DM');
+        } catch (Throwable $e) {
+            $this->showFail('Send DM');
             throw $e;
         }
     }
 
     /** @test */
-    public function testSendEmptyDM()
+    public function testSendEmptyDM(): void
     {
         try {
             $result = $this->chatService->sendDM(1, 2, "");
-            $this->assertEquals("âŒ Cannot send empty message.", $result);
-            echo "\033[32m✓\033[0m PASS - Send empty DM\n";
-        } catch (Exception $e) {
-            echo "\033[31m✗\033[0m FAIL - Send empty DM\n";
+            $this->assertEquals("❌ Cannot send empty message.", $result);
+            $this->pass('Send empty DM');
+        } catch (Throwable $e) {
+            $this->showFail('Send empty DM');
             throw $e;
         }
     }
 
     /** @test */
-    public function testSendChannelMessage()
+    public function testSendChannelMessage(): void
     {
         try {
             $result = $this->chatService->sendChannelMessage(1, 1, "Halo");
             $this->assertStringContainsString("[#general] Gilang: Halo", $result);
-            echo "\033[32m✓\033[0m PASS - Send channel message\n";
-        } catch (Exception $e) {
-            echo "\033[31m✗\033[0m FAIL - Send channel message\n";
+            $this->pass('Send channel message');
+        } catch (Throwable $e) {
+            $this->showFail('Send channel message');
             throw $e;
         }
     }
 
     /** @test */
-    public function testSendFileBlocked()
+    public function testSendFileBlocked(): void
     {
         try {
             $result = $this->chatService->sendFile(1, 1, "malware.exe");
-            $this->assertEquals("âŒ File format not supported.", $result);
-            echo "\033[32m✓\033[0m PASS - Send file blocked\n";
-        } catch (Exception $e) {
-            echo "\033[31m✗\033[0m FAIL - Send file blocked\n";
+            $this->assertEquals("❌ File format not supported.", $result);
+            $this->pass('Send file blocked');
+        } catch (Throwable $e) {
+            $this->showFail('Send file blocked');
             throw $e;
         }
     }
