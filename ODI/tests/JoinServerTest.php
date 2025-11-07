@@ -1,5 +1,4 @@
 <?php
-
 use PHPUnit\Framework\TestCase;
 
 class JoinServerTest extends TestCase
@@ -34,7 +33,7 @@ class JoinServerTest extends TestCase
             $output = ob_get_clean();
 
             // Pastikan pesan sukses muncul setelah POST
-            $this->assertStringContainsString("Kamu berhasil join server 'CIHUY GRUB' 🎉", $output);
+            $this->assertStringContainsString("Kamu berhasil join server 'CIHUY GRUB' ðŸŽ‰", $output);
             echo "\033[32m✓\033[0m PASS - Join server success message\n";
         } catch (Exception $e) {
             echo "\033[31m✗\033[0m FAIL - Join server success message\n";

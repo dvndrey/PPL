@@ -48,10 +48,10 @@ class ServerBoostTest extends TestCase
             addBooster($userId); // 4 boosts
             $data = getServerData();
             $this->assertEquals(2, $data['level']); // floor(4/2) = 2
-
-            echo "\033[32m✅\033[0m PASS - Level increases every two boosts\n";
+            
+            echo "\033[32m✓\033[0m PASS - Level increases every two boosts\n";
         } catch (Exception $e) {
-            echo "\033[31m❌\033[0m FAIL - Level increases every two boosts\n";
+            echo "\033[31m✗\033[0m FAIL - Level increases every two boosts\n";
             throw $e;
         }
     }
