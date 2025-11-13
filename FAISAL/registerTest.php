@@ -12,7 +12,6 @@ class RegisterTest extends TestCase
             $result = $callback();
             $this->assertEquals($expected, $result);
 
-            // tampilkan icon sesuai hasil yang diharapkan
             if (str_starts_with($expected, "Error:") ||
                 str_contains(strtolower($expected), "invalid") ||
                 str_contains(strtolower($expected), "must") ||
