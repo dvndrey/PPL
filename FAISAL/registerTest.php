@@ -18,9 +18,9 @@ class RegisterTest extends TestCase
                 str_contains(strtolower($expected), "must") ||
                 str_contains(strtolower($expected), "already") ||
                 str_contains(strtolower($expected), "you must")) {
-                echo "\033[31mX\033[0m FAIL - {$desc}\n"; // merah untuk error
+                echo "\033[31mX\033[0m FAIL - {$desc}\n";
             } else {
-                echo "\033[32m✓\033[0m PASS - {$desc}\n"; // hijau untuk sukses
+                echo "\033[32m✓\033[0m PASS - {$desc}\n";
             }
 
         } catch (AssertionFailedError $e) {
