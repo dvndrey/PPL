@@ -10,10 +10,9 @@ class JoinServerTest extends TestCase
             $_POST = [];
 
             ob_start();
-            include __DIR__ . '/../src/join.php'; // sesuaikan path
+            include __DIR__ . '/../src/join.php';
             $output = ob_get_clean();
 
-            // Pastikan tidak ada pesan muncul saat GET
             $this->assertStringNotContainsString("Kamu berhasil join server", $output);
             echo "\033[32m✓\033[0m PASS - Initial page has no message\n";
         } catch (Exception $e) {
@@ -26,14 +25,23 @@ class JoinServerTest extends TestCase
     {
         try {
             $_SERVER['REQUEST_METHOD'] = 'POST';
-            $_POST = []; // tombol diklik, tapi tidak ada input link di versi lama
+            $_POST = [];
 
             ob_start();
             include __DIR__ . '/../src/join.php';
             $output = ob_get_clean();
 
-            // Pastikan pesan sukses muncul setelah POST
-            $this->assertStringContainsString("Kamu berhasil join server 'CIHUY GRUB' ðŸŽ‰", $output);
+            // Hilangkan tag HTML supaya tidak memenuhi terminal
+            $cleanOutput = strip_tags($output);
+
+            // Pastikan pesan sukses muncul
+            $this->assertStringContainsString(
+    "Kamu berhasil join server 'CIHUY GRUB'",
+    $cleanOutput,
+    "Pesan sukses tidak ditemukan di halaman join server."
+);
+
+
             echo "\033[32m✓\033[0m PASS - Join server success message\n";
         } catch (Exception $e) {
             echo "\033[31m✗\033[0m FAIL - Join server success message\n";

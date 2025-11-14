@@ -13,7 +13,7 @@ class JoinInvalidServerTest extends TestCase
             include __DIR__ . '/../src/join_invalid.php';
             $output = ob_get_clean();
 
-            $this->assertStringContainsString("Link undangan tidak valid atau sudah kadaluarsa âŒ", $output);
+            $this->assertStringContainsString("Link undangan tidak valid atau sudah kadaluarsa ", $output);
             echo "\033[32m✓\033[0m PASS - Invalid invite shows error\n";
         } catch (Exception $e) {
             echo "\033[31m✗\033[0m FAIL - Invalid invite shows error\n";
@@ -31,7 +31,7 @@ class JoinInvalidServerTest extends TestCase
             include __DIR__ . '/../src/join_invalid.php';
             $output = ob_get_clean();
 
-            $this->assertStringContainsString("Kamu berhasil join server 'CIHUY GRUB' ðŸŽ‰", $output);
+            $this->assertStringContainsString("Kamu berhasil join server 'CIHUY GRUB' ", $output);
             echo "\033[32m✓\033[0m PASS - Valid invite shows success\n";
         } catch (Exception $e) {
             echo "\033[31m✗\033[0m FAIL - Valid invite shows success\n";
