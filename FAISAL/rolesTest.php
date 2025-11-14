@@ -5,13 +5,12 @@ require 'roles.php';
 
 class RolesTest extends TestCase
 {
-    // TC-15: Akses menu admin dengan role Owner/Host
     public function testOwnerFullAccess()
     {
         try {
             $this->assertTrue(hasAccess('Owner', 'Admin Panel'));
             $this->assertTrue(hasAccess('Owner', 'Manage Server'));
-            $this->assertTrue(hasAccess('Owner', 'Any Other Menu')); // karena punya 'All'
+            $this->assertTrue(hasAccess('Owner', 'Any Other Menu'));
             echo "\033[32m✓\033[0m PASS - Owner full access\n";
         } catch (Exception $e) {
             echo "\033[31m✗\033[0m FAIL - Owner full access\n";
@@ -19,7 +18,6 @@ class RolesTest extends TestCase
         }
     }
 
-    // TC-16: Ubah pengaturan server dengan role administrator
     public function testManageServerByAdmin()
     {
         try {

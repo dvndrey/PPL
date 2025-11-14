@@ -21,7 +21,6 @@ function manageServer($role, $serverName, $region, $iconFile) {
         return "Access Denied";
     }
 
-    // Simulasi perubahan server tersimpan
     $_SESSION['server'] = [
         'name' => $serverName,
         'region' => $region,
