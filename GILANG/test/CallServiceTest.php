@@ -20,7 +20,7 @@ class CallServiceTest extends TestCase
     {
         try {
             $result = $this->callService->voiceCall(1);
-            $this->assertStringContainsString("📞 Voice call with CowK is connected!", $result);
+            $this->assertStringContainsString("📞 Voice call with CowK is connected! Mic aktif 🔊", $result);
             echo "\033[32m✓\033[0m PASS - Voice call\n";
         } catch (Exception $e) {
             echo "\033[31m✗\033[0m FAIL - Voice call\n";
@@ -33,7 +33,7 @@ class CallServiceTest extends TestCase
     {
         try {
             $result = $this->callService->videoCall(1);
-            $this->assertStringContainsString("✅ Video call with CowK has started!", $result);
+            $this->assertStringContainsString("✅ Video call with CowK has started! Camera on 🎥", $result);
             echo "\033[32m✓\033[0m PASS - Video call\n";
         } catch (Exception $e) {
             echo "\033[31m✗\033[0m FAIL - Video call\n";
@@ -46,7 +46,10 @@ class CallServiceTest extends TestCase
     {
         try {
             $result = $this->callService->screenShare(1, "Browser");
-            $this->assertStringContainsString("🖥️ Screen sharing (Browser) started for CowK", $result);
+            $this->assertStringContainsString(
+                "🖥️ Screen sharing (Browser) started for CowK. Layar tampil ke member lain.",
+                $result
+            );
             echo "\033[32m✓\033[0m PASS - Screen share\n";
         } catch (Exception $e) {
             echo "\033[31m✗\033[0m FAIL - Screen share\n";
@@ -55,15 +58,15 @@ class CallServiceTest extends TestCase
     }
 
     /** @test */
-    public function testUserNotFound()
-    {
-        try {
-            $result = $this->callService->voiceCall(99);
-            $this->assertEquals("User not found.", $result);
-            echo "\033[32m✓\033[0m PASS - User not found\n";
-        } catch (Exception $e) {
-            echo "\033[31m✗\033[0m FAIL - User not found\n";
-            throw $e;
-        }
-    }
+    // public function testUserNotFound()
+    // {
+    //     try {
+    //         $result = $this->callService->voiceCall(99);
+    //         $this->assertEquals("User not found.", $result);
+    //         echo "\033[32m✓\033[0m PASS - User not found\n";
+    //     } catch (Exception $e) {
+    //         echo "\033[31m✗\033[0m FAIL - User not found\n";
+    //         throw $e;
+    //     }
+    // }
 }

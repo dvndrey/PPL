@@ -39,7 +39,7 @@ class ChatServiceTest extends TestCase
     {
         try {
             $result = $this->chatService->sendDM(1, 2, "");
-            $this->assertEquals("âŒ Cannot send empty message.", $result);
+            $this->assertEquals("❌ Cannot send empty message.", $result);
             echo "\033[32m✓\033[0m PASS - Send empty DM\n";
         } catch (Exception $e) {
             echo "\033[31m✗\033[0m FAIL - Send empty DM\n";
@@ -65,7 +65,7 @@ class ChatServiceTest extends TestCase
     {
         try {
             $result = $this->chatService->sendFile(1, 1, "malware.exe");
-            $this->assertEquals("âŒ File format not supported.", $result);
+            $this->assertEquals("❌ File format not supported.", $result);
             echo "\033[32m✓\033[0m PASS - Send file blocked\n";
         } catch (Exception $e) {
             echo "\033[31m✗\033[0m FAIL - Send file blocked\n";
