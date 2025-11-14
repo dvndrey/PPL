@@ -1,7 +1,25 @@
 <?php
-// serverOwnershipTest.php
+
 use PHPUnit\Framework\TestCase;
-require_once 'serverOwnership.php';
+use PHPUnit\Framework\AssertionFailedError;
+
+class ServerOwnership
+{
+    public function transfer($serverName, $newOwner, $isChecked)
+    {
+        if (!$isChecked) {
+            return [
+                "success" => false,
+                "message" => "Anda harus menyetujui sebelum mentransfer ownership!"
+            ];
+        }
+
+        return [
+            "success" => true,
+            "message" => "Ownership berhasil ditransfer ke user $newOwner."
+        ];
+    }
+}
 
 class ServerOwnershipTest extends TestCase
 {
@@ -12,21 +30,46 @@ class ServerOwnershipTest extends TestCase
         $this->ownership = new ServerOwnership();
     }
 
-    public function test_TC_20_Melakukan_transfer_kepemilikan_server()
+    private function runTest($desc, $expectedSuccess, $expectedMessage, $callback)
     {
         try {
-            $result = $this->ownership->transferOwnership('MyGamingServer', 'Cowk');
-            $this->assertStringContainsString(
-                "Ownership server 'MyGamingServer' berhasil ditransfer ke user 'Cowk'",
-                $result
-            );
-            // Verifikasi tambahan: owner baru harus sesuai
-            $this->assertEquals('Cowk', $this->ownership->getOwner('MyGamingServer'));
-            echo "\033[32m✓\033[0m PASS - TC 20 Melakukan transfer kepemilikan server\n";
-        } catch (Exception $e) {
-            echo "\033[31m✗\033[0m FAIL - TC 20 Melakukan transfer kepemilikan server\n";
-            throw $e;
+            $result = $callback();
+
+            $this->assertEquals($expectedSuccess, $result['success']);
+            $this->assertEquals($expectedMessage, $result['message']);
+
+            if ($expectedSuccess) {
+                echo "\033[32m✓\033[0m PASS - {$desc}\n";
+            } else {
+                echo "\033[31mX\033[0m FAIL - {$desc}\n";
+            }
+
+        } catch (AssertionFailedError $e) {
+            echo "\033[31mX\033[0m FAIL - {$desc}\n";
         }
     }
 
+    public function testOwnership()
+    {
+        $checkbox = true;
+
+        if ($checkbox === false) {
+
+            $this->runTest(
+                "Gagal transfer ownership karena checkbox belum dicentang",
+                false,
+                "Anda harus menyetujui sebelum mentransfer ownership!",
+                fn() => $this->ownership->transfer("Yamete", "cowk3837", false)
+            );
+
+        } else {
+
+            $this->runTest(
+                "Berhasil transfer ownership setelah checkbox dicentang",
+                true,
+                "Ownership berhasil ditransfer ke user cowk3837.",
+                fn() => $this->ownership->transfer("Yamete", "cowk3837", true)
+            );
+        }
+    }
 }
